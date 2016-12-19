@@ -1,4 +1,4 @@
-package com.lib.http;
+package com.lib.http.request;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +13,7 @@ import java.util.List;
 import com.lib.connect.SocketPool;
 
 public class SocketPoolImmediate implements SocketPool {
+	public final static String CRLF = "\r\n";
 	private final int mCacheCount;
 	private final List<Socket> mIdleList = Collections.synchronizedList(new ArrayList<Socket>());
 	private final int mConnectTimeout;
