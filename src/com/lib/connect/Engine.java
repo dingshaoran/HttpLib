@@ -4,18 +4,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.Socket;
 
 public class Engine {
+	private final SocketPool pool;
 	public static final Object CRLF = "\r\n";
 
+	public Engine(SocketPool pool) {
+		this.pool = pool;
+	}
+
 	/**
-	 * 使用 socket 发送数据并返回数据，此方法内发送请求 会阻塞线程
+	 * 使用  发送数据并返回数据，此方法内发送请求 会阻塞线程
 	 * 
 	 * @return
+	 * @throws IOException 
+	 * @throws UnsupportedEncodingException 
 	 */
-	void send(Request request, Response response) {
-
-	};
+	void send(Request request, Response response) throws UnsupportedEncodingException, IOException {
+		Socket socket = pool.get();
+		request.write(socket.getOutputStream());
+		response.read(socket.getInputStream());
+		pool.cache(socket);
+	}
 
 	public static interface Request {
 
