@@ -6,20 +6,20 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 
-public class Engine {
+public class RequestEngine {
 	private final SocketPool pool;
-	public static final Object CRLF = "\r\n";
+	public static final String CRLF = "\r\n";
 
-	public Engine(SocketPool pool) {
+	public RequestEngine(SocketPool pool) {
 		this.pool = pool;
 	}
 
 	/**
-	 * 使用  发送数据并返回数据，此方法内发送请求 会阻塞线程
+	 * 使用socket 发送数据并返回数据，此方法内发送请求 会阻塞线程
 	 * 
 	 * @return
-	 * @throws IOException 
-	 * @throws UnsupportedEncodingException 
+	 * @throws IOException
+	 * @throws UnsupportedEncodingException
 	 */
 	void send(Request request, Response response) throws UnsupportedEncodingException, IOException {
 		Socket socket = pool.get();

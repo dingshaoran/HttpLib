@@ -1,20 +1,24 @@
-package com.lib.http.request;
+package com.lib.http.line;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+
+import com.lib.connect.Watcher;
 
 public class SimpleRequestLine implements RequestLine {
 	private final String methord;
 	private final String uri;
 	private final String version;
 	private final String charset;
+	private final Watcher watcher;
 
 	private SimpleRequestLine(Builder builder) {
 		this.charset = builder.charset;
 		this.methord = builder.methord;
 		this.uri = builder.uri;
 		this.version = builder.version;
+		this.watcher = builder.watcher;
 	}
 
 	public String getMethord() {
@@ -34,6 +38,9 @@ public class SimpleRequestLine implements RequestLine {
 		if (methord == null) {
 			throw new NullPointerException("请设置那种请求类型");
 		}
+		if (watcher != null) {
+			watcher.watcher(String.valueOf(System.currentTimeMillis()));
+		}
 		StringBuilder stringBuilder = new StringBuilder(100);
 		stringBuilder.append(methord)
 				.append(" ")
@@ -49,9 +56,11 @@ public class SimpleRequestLine implements RequestLine {
 		private String methord;
 		private String uri;
 		private String version;
+		private final Watcher watcher;
 
-		public Builder(String charset) {
+		public Builder(Watcher watcher, String charset) {
 			this.charset = charset;
+			this.watcher = watcher;
 		}
 
 		public void setMethord(String methord) {

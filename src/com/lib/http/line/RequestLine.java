@@ -1,4 +1,4 @@
-package com.lib.http.request;
+package com.lib.http.line;
 
 import java.io.IOException;
 import java.io.OutputStream;

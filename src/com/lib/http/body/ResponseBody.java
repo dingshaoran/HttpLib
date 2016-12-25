@@ -1,10 +1,12 @@
-package com.lib.http.request;
+package com.lib.http.body;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-public interface ResponseHeader {
+import com.lib.connect.Watcher;
+
+public interface ResponseBody extends Watcher {
 
 	public void read(InputStream outStream) throws UnsupportedEncodingException, IOException;
 }
