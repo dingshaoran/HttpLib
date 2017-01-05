@@ -140,7 +140,7 @@ public class SimpleRequestHeader implements RequestHeader {
 			String key = entry.getKey();
 			String value = entry.getValue();
 			if (key != null && value != null) {
-				stringBuilder.append(key).append(":").append(value).append(RequestEngine.CRLF);
+				stringBuilder.append(key).append(": ").append(value).append(RequestEngine.CRLF);
 				outStream.write(stringBuilder.toString().getBytes(charset));
 				stringBuilder.replace(0, stringBuilder.length(), "");
 			} else {
