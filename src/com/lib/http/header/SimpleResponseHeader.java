@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.lib.connect.RequestEngine;
@@ -32,25 +33,32 @@ public class SimpleResponseHeader implements ResponseHeader {
 	public static String HEADER_IfUnmodifiedSince = "If-Unmodified-Since";
 	public static String HEADER_Pragma = "Pragma";
 	public static String HEADER_Referer = "Referer";
-	private final Map<String, String> map;
-
-	public SimpleResponseHeader(Map<String, String> map) {
-		this.map = map;
-	}
+	private final ArrayList<String> mHeaders = new ArrayList<String>(10);
 
 	@Override
 	public void read(InputStream in) throws UnsupportedEncodingException, IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		while (true) {
 			String readLine = reader.readLine();
-			if (readLine != null) {
-				int index = readLine.indexOf(":");
-				if (index > 0) {
-					map.put(readLine.substring(0, index).trim(), readLine.substring(index, readLine.length()).trim());
-				} else if (RequestEngine.CRLF.equals(readLine)) {
-					break;
-				}
+			if (RequestEngine.CRLF.equals(readLine)) {
+				break;
+			} else {
+				mHeaders.add(readLine);
 			}
 		}
+	}
+
+	public void parseKVP(Map<String, String> map) {
+		for (int i = 0; i < mHeaders.size(); i++) {
+			String readLine = mHeaders.get(i);
+			int index = readLine.indexOf(":");
+			if (index > 0) {
+				map.put(readLine.substring(0, index).trim(), readLine.substring(index, readLine.length()).trim());
+			}
+		}
+	}
+
+	public ArrayList<String> getHeaders() {
+		return mHeaders;
 	}
 }
